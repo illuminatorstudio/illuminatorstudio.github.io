@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Illuminator</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080808;
+    --surface: #111111;
+    --border: #1F1F1F;
+    --text: #F0F0F0;
+    --muted: #777777;
+    --accent: #8B5CF6;
+    --accent-dim: rgba(139,92,246,0.15);
+  }
+
+  html { background: var(--bg); }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* ─── HERO 16/9 ─────────────────────────────── */
+  .hero {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    overflow: hidden;
+    background: #0D0D0D;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    /* Placeholder: убери этот фильтр когда добавишь своё фото */
+    filter: brightness(0.85);
+  }
+
+  /* Placeholder gradient — замени на <img> со своим фото */
+  .hero-placeholder {
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(ellipse 50% 80% at 30% 60%, rgba(139,92,246,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 75% 40%, rgba(80,40,180,0.18) 0%, transparent 55%),
+      linear-gradient(160deg, #0D0010 0%, #050508 50%, #080010 100%);
+  }
+
+  /* Fade to black at bottom of hero */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 55%;
+    background: linear-gradient(to bottom, transparent 0%, var(--bg) 100%);
+    pointer-events: none;
+  }
+
+  /* ─── AVATAR ─────────────────────────────────── */
+  .avatar-wrap {
+    display: flex;
+    justify-content: center;
+    /* pulls avatar up over hero fade */
+    margin-top: -52px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 2.5px solid #1E1E1E;
+    overflow: hidden;
+    background: #111;
+    box-shadow: 0 0 0 1px rgba(139,92,246,0.2), 0 8px 32px rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-initials {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.03em;
+  }
+
+  /* ─── CONTENT ────────────────────────────────── */
+  .content {
+    padding: 20px 28px 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .bio {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+    text-align: center;
+    max-width: 320px;
+    margin-bottom: 44px;
+  }
+
+  /* ─── SECTIONS ───────────────────────────────── */
+  .section {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .section:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .section-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 18px;
+  }
+
+  /* ─── BUTTONS ────────────────────────────────── */
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 18px;
+    background: transparent;
+    border: 1px solid #272727;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 15%; bottom: 15%;
+    width: 2px;
+    background: var(--accent);
+    border-radius: 0 2px 2px 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .btn:hover, .btn:active {
+    border-color: rgba(139,92,246,0.4);
+    box-shadow: 0 0 20px var(--accent-dim);
+    background: #131313;
+  }
+
+  .btn:hover::before, .btn:active::before {
+    opacity: 1;
+  }
+
+  .btn-arrow {
+    color: #444;
+    font-size: 15px;
+    transition: transform 0.2s, color 0.2s;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .btn:hover .btn-arrow {
+    transform: translateX(3px);
+    color: var(--accent);
+  }
+
+  /* Divider */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 40px;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--accent);
+    color: #fff;
+    padding: 9px 22px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 99;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 0 28px 40px;
+    font-size: 10px;
+    color: #272727;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── замени .hero-placeholder на <img src="твоё фото" class="hero-img"> -->
+<div class="hero">
+  <div class="hero-placeholder"></div>
+</div>
+
+<!-- ── AVATAR ── замени содержимое на <img src="твоё фото" alt=""> -->
+<div class="avatar-wrap">
+  <div class="avatar">
+    <span class="avatar-initials">IL</span>
+    <!-- <img src="YOUR_PHOTO.jpg" alt="Illuminator"> -->
+  </div>
+</div>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="content">
+
+  <div class="brand">Illuminator</div>
+
+  <p class="bio">
+    Lighting design studio. Touring shows, broadcast & music video production.
+    20 years crafting light as a language.
+  </p>
+
+  <!-- COLLABORATION -->
+  <div class="section">
+    <div class="section-label">Work together</div>
+    <div class="section-title">Let's create something</div>
+    <p class="section-text">
+      Open for collaboration on touring productions, broadcast projects, and music videos.
+      Reach out to discuss your vision.
+    </p>
+    <a class="btn" href="mailto:YOUR_EMAIL_HERE">
+      Get in touch
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <div class="section-label">Education</div>
+    <div class="section-title">Illuminator Learn</div>
+    <p class="section-text">
+      Courses and guides on lighting design — from concept to full show.
+      Structure, not software. Art, not manuals.
+    </p>
+    <a class="btn" href="https://t.me/YOUR_LEARN_CHANNEL" target="_blank" rel="noopener">
+      Open channel
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SUPPORT -->
+  <div class="section">
+    <div class="section-label">Support</div>
+    <div class="section-title">If this work means something</div>
+    <p class="section-text">
+      If the content has been valuable to you, any support is genuinely appreciated
+      and goes directly into making more of it.
+    </p>
+    <button class="btn" onclick="copyWallet()">
+      Copy TON wallet address
+      <span class="btn-arrow">⎘</span>
+    </button>
+  </div>
+
+</div>
+
+<div class="footer">Illuminator Studio</div>
+
+<div class="toast" id="toast">Address copied</div>
+
+<script>
+  // ← вставь сюда свой TON адрес
+  const WALLET = 'YOUR_TON_WALLET_ADDRESS_HERE';
+
+  function copyWallet() {
+    const copy = (text) => {
+      const el = document.createElement('textarea');
+      el.value = text;
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
+      document.body.appendChild(el);
+      el.focus(); el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    };
+
+    const showToast = () => {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    };
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(WALLET).then(showToast).catch(() => { copy(WALLET); showToast(); });
+    } else {
+      copy(WALLET); showToast();
+    }
+  }
+</script>
+
+</body>
+</html>
